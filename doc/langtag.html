@@ -204,6 +204,114 @@ li {
   font-family: 'Source Sans 3', sans-serif;
 }
 
+#slm table {
+  border-collapse: collapse;
+}
+
+#slm th {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: center;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+#slm td {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: left;
+  font-family: 'Source Code Pro', monospace;
+}
+
+#zhm table {
+  border-collapse: collapse;
+}
+
+#zhm th {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: center;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+#zhm td {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: left;
+  font-family: 'Source Code Pro', monospace;
+}
+
+#stf table {
+  border-collapse: collapse;
+}
+
+#stf th {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: center;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+#stf td {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: left;
+  font-family: 'Source Code Pro', monospace;
+}
+
+#stf .desc {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+#ppr table {
+  border-collapse: collapse;
+}
+
+#ppr th {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: center;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+#ppr td {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: left;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+#ppr .cv {
+  font-family: 'Source Code Pro', monospace;
+}
+
+#arc table {
+  border-collapse: collapse;
+}
+
+#arc th {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: center;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+#arc td {
+  border: thin solid;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  text-align: left;
+  font-family: 'Source Code Pro', monospace;
+}
+
     </style>
   </head>
   <body>
@@ -217,14 +325,29 @@ li {
 <div id="tochead">Table of Contents</div>
 <ul>
   <li>1. <a href="#sec1">Introduction</a></li>
-  <li>2. <a href="#sec2">Language tag format</a>
+  <li>2. <a href="#sec2">Language tag normalization</a>
     <ul>
-      <li>2.1 <a href="#sec2p1">Grandfathered tags</a></li>
-      <li>2.2 <a href="#sec2p2">Language subtag</a></li>
+      <li>2.1 <a href="#sec2p1">Universal tag normalization</a></li>
+      <li>2.2 <a href="#sec2p2">Grandfathered tags</a></li>
+      <li>2.3 <a href="#sec2p3">Legacy tags</a></li>
+      <li>2.4 <a href="#sec2p4">Tag remapping</a></li>
+      <li>2.5 <a href="#sec2p5">Tag parsing</a></li>
+      <li>2.6 <a href="#sec2p6">Language remapping</a>
+        <ul>
+          <li>2.6.1 <a href="#sec2p6p1">Extlang promotion</a></li>
+          <li>2.6.2 <a href="#sec2p6p2">Archaic tags</a></li>
+          <li>2.6.3 <a href="#sec2p6p3">Language subtag update</a></li>
+          <li>2.6.4 <a href="#sec2p6p4">Subtag simplification</a></li>
+        </ul>
+      </li>
+      <li>2.7 <a href="#sec2p7">Elaboration remapping</a></li>
+      <li>2.8 <a href="#sec2p8">Script suppression</a></li>
+      <li>2.9 <a href="#sec2p9">Normalization process</a></li>
     </ul>
   </li>
-  <li>3. <a href="#sec3">Language identification</a></li>
-  <li>9. <a href="#sec9">Language tag definition</a></li>
+  <li>3. <a href="#sec3">Language tag validation</a></li>
+  <li>4. <a href="#sec4">Macrolanguage identification</a></li>
+  <li>5. <a href="#sec5">Language names</a></li>
 </ul>
 <div> </div>
 <ul>
@@ -236,11 +359,11 @@ li {
 
 <h2 id="sec1">1. Introduction</h2>
 
-<p>Langtag is a set of Python utilities for parsing language tag databases, listing useful information from those database, and generating data tables that can be used in software that handles language tags.</p>
+<p>Langtag is a set of Python utilities for working with language tags and language tag databases.</p>
 
-<p>The language tag format that Langtag uses is the standard language tagging format described in <a href="#extRFC5646">[RFC-​5646]</a>.  This RFC is a complex standard that is based on externally managed databases.  The Langtag project provides Python utilities for parsing and deriving information from these externally managed databases that are necessary for properly handling language tags.</p>
+<p>The language tag format that Langtag uses is the standard language tagging format described in <a href="#extRFC5646">[RFC-​5646]</a>, which is the core RFC in BCP 47.  This RFC is a complex standard that is based on externally managed databases.  The Langtag project provides Python utilities for parsing and deriving information from these externally managed databases that are necessary for properly handling language tags, as well as utilities for working with the language tags directly.</p>
 
-<h2 id="sec2">2. Language tag format</h2>
+<h2 id="sec2">2. Language tag normalization</h2>
 
 <p>The format of a <i>language tag</i> is defined in <a href="#extRFC5646">[RFC-​5646]</a>.  At the most basic level, a language tag is string of text that identifies the “language” used in certain media.  For example, the language tag <span class="tt">en-US</span> represents the English language as it is written in the United States.  Since “language” in this sense does not have a strict definition, the structure of a language tag can be surprisingly complex.</p>
 
@@ -251,46 +374,64 @@ li {
 
 <p>(2) Language tags must be at least one character.  There is technically no upper limit on the length of a language tag, but RFC-5646 allows implementations to impose upper limits on the length of a language tag, and recommends in §4.4.1 that implementations must allow for language tags of “at least 35 characters.”</p>
 
-<p>(3) Language tags are case insensitive.  However, normalized language tags are expected to follow certain conventions for capitalizing specific elements, which is described below.</p>
+<p>(3) Language tags are case insensitive.  However, normalized language tags are expected to follow certain conventions for capitalizing specific elements, which is described in §2.1 <a href="#sec2p1">Universal tag normalization</a>.</p>
 
 <p>(4) Language tags are limited to only ASCII alphanumeric characters and the hyphen.  In practice, one often encounters underscores used in place of hyphens, but properly formatted tags should only use hyphens.</p>
 
 <p>(5) Neither the first nor last character of a language tag may be a hyphen, and no hyphen may immediately follow another hyphen.</p>
 </blockquote>
 
-<p>Language tags can be thought of as a sequence of one or more <i>subtags.</i>  Subtags are always separated from each other with by hyphens.  To split a language tag into a sequence of subtags, simply split the string around the hyphen characters.  To form a language tag from a sequence of subtags, simply concatenate all the subtags together, with every subtag after the first preceded by a hyphen.  Subtags only contain alphanumeric characters, subtags are never empty, and hyphens are never used for any purpose except as a separator of subtags.</p>
+<p>Language tags can be thought of as a sequence of one or more <i>subtags.</i>  Subtags are always separated from each other by hyphens.  To split a language tag into a sequence of subtags, simply split the string around the hyphen characters.  To form a language tag from a sequence of subtags, simply concatenate all the subtags together, with every subtag after the first preceded by a hyphen.  Subtags only contain alphanumeric characters, subtags are never empty, and hyphens are never used for any purpose except as a separator of subtags.</p>
 
-<p>To normalize the letter case within a language tag so that all letters follow the conventions, use the following procedure:</p>
+<p>The following subsections describe the process of normalizing a language tag step by step.</p>
+
+<h3 id="sec2p1">2.1 Universal tag normalization</h3>
+
+<p>The first step in normalizing all language tags is <i>universal tag normalization.</i>  Universal tag normalization is not a complete normalization of a language tag, but it always is the first step in tag normalization and there are never any exceptions.</p>
+
+<p>The following algorithm is used for universal tag normalization:</p>
 
 <blockquote class="iblock">
-<p>(1) Convert all letters in the language tag to lowercase.</p>
+<p>(1) Trim leading and trailing whitespace</p>
 
-<p>(2) Subtags should be converted to use uppercase for all letters if the subtag is:</p>
+<p>(2) Check that the language tag is not empty after trimming; if it is, the language tag is not valid and universal tag normalization fails</p>
+
+<p>(3) Convert all underscores to hyphens</p>
+
+<p>(4) Check that the language tag now only contains ASCII alphanumeric characters and hyphens; if it contains any other characters, the language tag is not valid and universal tag normalization fails</p>
+
+<p>(5) Check that neither the first nor last character in the language tag is a hyphen, and that no hyphen is immediately preceded by another hyphen; if these hyphen rules are not followed, the language tag is not valid and universal tag normalization fails</p>
+
+<p>(6) Convert all letters in the language tag to lowercase</p>
+
+<p>(7) Split the language tag into a sequence of one or more subtags separated by hyphen characters, where the hyphens are not included in any of the subtags</p>
+
+<p>(8) Any subtag that satisfies <b>all</b> the following conditions should be altered such that any lowercase letters present in the tag are changed to their uppercase equivalents:</p>
 
 <ul>
 <li>exactly two characters long</li>
+<li>all characters are letters</li>
 <li>not the first subtag</li>
 <li>not preceded by a subtag that has only one character</li>
 </ul>
 
-<p>(3) Subtags should be converted to use an uppercase letter for the first character (if the first character is letter) and lowercase letters for all remaining characters that are letters if the subtag is:</p>
+<p>(9) Any subtag that satisfies <b>all</b> the following conditions should be altered such that if the first character is a lowercase letter it is replaced by its uppercase equivalent, and if any of the following characters are uppercase letters they are replaced by their lowercase equivalents:</p>
 
 <ul>
 <li>exactly four characters long</li>
+<li>all characters are letters</li>
 <li>not the first subtag</li>
 <li>not preceded by a subtag that has only one character</li>
 </ul>
 </blockquote>
 
-<p>The algorithm given above will properly normalize the letter case for <b>all</b> language tags.  It matches the algorithm given in §2.1.1 of RFC 5646.</p>
+<p>The above normalization algorithm is implemented in the provided Python <span class="tt">langtag</span> module by the <span class="tt">utnorm()</span> function.  This function takes a single argument which is the string to apply universal tag normalization to.  If the argument is not a string or it is not a valid language tag as determined by the algorithm above, <span class="tt">None</span> is returned by the function.  Otherwise, the function returns the language tag string with universal tag normalization applied.</p>
 
-<p>The following subsections define the format of language tags in greater detail.</p>
-
-<h3 id="sec2p1">2.1 Grandfathered tags</h3>
+<h3 id="sec2p2">2.2 Grandfathered tags</h3>
 
 <p>A <i>grandfathered tag</i> is an exceptional kind of language tag that does not obey all the rules.  Grandfathered tags arose from earlier language tag standards and are included in the current standard for sake of backwards compatibility.  The set of grandfathered tags is closed and frozen, such that no additional grandfathered tags will ever be added to the standard.</p>
 
-<p>All grandfathered tags follow the basic string format and letter casing conventions established in §2 <a href="#sec2">Language tag format</a>.  However, grandfathered tags do <b>not</b> necessarily follow any of the additional formatting rules given in the subsections that follow this subsection.</p>
+<p>All grandfathered tags can be properly normalized following the algorithm for <a href="#sec2p1">universal tag normalization</a> (§2.1).  However, grandfathered tags do <b>not</b> necessarily follow any of the rules given in the sections that follow this subsection.</p>
 
 <p>Most grandfathered tags are archaic and should be replaced during normalization by their modern, non-​grandfathered equivalent.  This common kind of grandfathered tag is called GG1 in this specification.  The following table gives all GG1 tags and for each grandfathered tag shows the modern, non-​grandfathered equivalent they should be replaced by during normalization:</p>
 
@@ -355,7 +496,7 @@ li {
 
 <p>In short, it is important that GG2 are <b>not</b> parsed like normal tags.  New applications should avoid using the GG2 tags, and use the proper modern equivalents instead.  However, legacy data that includes these GG2 tags should leave the GG2 tags alone during normalization and be careful to treat them as special grandfathered tags rather than misinterpreting them as though they were modern tags.</p>
 
-<p>Finally, there are three completely irregular grandfathered tags, which do not have any modern equivalent tags and do not follow the modern tag format (except for the basic string format and casing conventions in §2).  These three completely irregular grandfathered tags are called GG3 in this specification.  The following table gives each of the three GG3 tags and a textual description:</p>
+<p>Finally, there are three completely irregular grandfathered tags, which do not have any modern equivalent tags and do not follow the modern tag format (except for the <a href="#sec2p1">universal tag normalization</a> conventions in §2.1).  These three completely irregular grandfathered tags are called GG3 in this specification.  The following table gives each of the three GG3 tags and a textual description:</p>
 
 <blockquote id="ggc">
 <table>
@@ -371,151 +512,371 @@ li {
 
 <p>As with GG2 tags, the GG3 tags should be left alone during normalization and treated as exceptions.  Modern applications should avoid using the GG3 tags, but legacy data based on earlier standards may include them.</p>
 
-<h3 id="sec2p2">2.2 Language subtag</h3>
+<p>The full set of grandfathered tags that were presented in this subsection corresponds exactly to the set of records with type <span class="tt">grandfathered</span> in the <a href="#extSubtag">[SUBTAG]</a> registry.  The mappings of GG1 tags to their normalized equivalents corresponds exactly to the <span class="tt">Preferred-​Value</span> mappings within the grandfathered records.  The union of the GG2 and GG3 sets corresponds exactly to all grandfathered records that lack a <span class="tt">Preferred-​Value</span> field.</p>
 
-<p>The <i>language subtag</i> is the first element in a language tag, which identifies the main language.  All language tags can be parsed into two components — the language subtag followed by an <i>elaboration,</i> which is a sequence of one or more additional subtags that adds additional information to the language tag.  This subsection explains how to parse a language tag into a language subtag and an elaboration, as well as the meaning of the language subtag.  Further subsections will explain the meaning of subtags in the elaboration.</p>
+<h3 id="sec2p3">2.3 Legacy tags</h3>
 
-<p>Before attempting to parse a language tag into the language subtag and the elaboration, first perform a basic normalization of the language tag string by trimming leading and trailing whitespace (if appropriate), replacing underscores by hyphens, verifying the basic string format established in §2 <a href="#sec2">Language tag format</a>, and normalizing letter case according to the algorithm in §2.</p>
+<p>A <i>legacy tag</i> is an obsolete language tag that should be replaced with a modern equivalent when it occurs.  Legacy tags differ from <a href="#sec2p2">grandfathered tags</a> (§2.2) because legacy tags are valid language tags that obey all the rules that other language tags do, while grandfathered tags do not obey all the rules.  Legacy tags are simply older forms that have a better equivalent that should be used in modern practice.</p>
 
-<p>After this basic verification and normalization step, check whether the language tag matches any of the GG1 <a href="#sec2p1">grandfathered tags</a> (§2.1).  If it does match a GG1 tag, replace it with its normalized equivalent before proceeding.</p>
+<p>The legacy tags are based on records in the <a href="#extSubtag">[SUBTAG]</a> registry that have the type <span class="tt">redundant</span>.  Redundant records are called redundant because they refer to official language tag registrations from older standards that are no longer necessary in the modern standard, where subtags are registered rather than full language tags.  Many redundant records in the subtag registry truly are redundant and can be ignored.  However, redundant records with <span class="tt">Preferred-​Value</span> fields contain mappings from older language tag values to modern values that are not possible to otherwise derive.</p>
 
-<p>The next basic normalization step is to remap redundant sign languages<sup><a href="#ft2p2n1">[†1]</a></sup>.  To do this, use all records with type “redundant” in the <a href="#extSubtag">[SUBTAG]</a> database whose first subtag is <span class="tt">sgn</span> and that have a <span class="tt">Preferred-​Value</span> field.  All these records should have exactly two subtags in their tag field.  If the language tag also has exactly two subtags that match one of these redundant records, then replace the language tag with the value of the <span class="tt">Preferred-​Value</span> field.</p>
+<p>The set of legacy tags is defined as the subset of redundant records that have a <span class="tt">Preferred-​Value</span> mapping.  The majority of legacy tags are older representation of sign languages, which formerly used a language subtag of <span class="tt">sgn</span> that was paired with a region subtag identifying in which region the sign language is used.  In modern use, each of these sign languages has been given its own unique language code.  The legacy tags map the old region-​based sign language tags to their modern language code as follows:</p>
 
-<blockquote class="explain" id="ft2p2n1">
-[†1] — The redundant records are a closed, frozen set of records that will not be expanded in the future.  The only remappings defined by these records are the sign language mappings that are handled above and a few remappings involving the Chinese macrolanguage.  However, the Chinese macrolanguage remappings truly are redundant and are handled by extlang promotion described in the next step, so there is no need to handle these as special cases.
+<blockquote id="slm">
+<table>
+  <tr>
+    <th colspan="2">Sign languages</th>
+  </tr>
+  <tr>
+    <th>Legacy tag</th>
+    <th>Modern form</th>
+  </tr>
+  <tr><td>sgn-BR</td><td>bzs</td></tr>
+  <tr><td>sgn-CO</td><td>csn</td></tr>
+  <tr><td>sgn-DE</td><td>gsg</td></tr>
+  <tr><td>sgn-DK</td><td>dsl</td></tr>
+  <tr><td>sgn-ES</td><td>ssp</td></tr>
+  <tr><td>sgn-FR</td><td>fsl</td></tr>
+  <tr><td>sgn-GB</td><td>bfi</td></tr>
+  <tr><td>sgn-GR</td><td>gss</td></tr>
+  <tr><td>sgn-IE</td><td>isg</td></tr>
+  <tr><td>sgn-IT</td><td>ise</td></tr>
+  <tr><td>sgn-JP</td><td>jsl</td></tr>
+  <tr><td>sgn-MX</td><td>mfs</td></tr>
+  <tr><td>sgn-NI</td><td>ncs</td></tr>
+  <tr><td>sgn-NL</td><td>dse</td></tr>
+  <tr><td>sgn-NO</td><td>nsl</td></tr>
+  <tr><td>sgn-PT</td><td>psr</td></tr>
+  <tr><td>sgn-SE</td><td>swl</td></tr>
+  <tr><td>sgn-US</td><td>ase</td></tr>
+  <tr><td>sgn-ZA</td><td>sfs</td></tr>
+</table>
 </blockquote>
 
-<p>The final basic normalization step is to promote any extlangs.  An <i>extlang</i> is present if all the following conditions are satisfied:</p>
+<p>The sign languages table above is derived from the subtag database with all redudant records that begin with the <span class="tt">sgn</span> language subtag.  All such records have <span class="tt">Preferred-​Value</span> fields are therefore all such records are legacy tags.  Note that a few old sign language designations are also present in the GG1 table of <a href="#sec2p2">grandfathered tags</a> (§2.2).</p>
+
+<p>All the remaining legacy tags are for specific languages within the Chinese macrolanguage.  This group of legacy tags is not strictly necessary, since the mappings contained here are equivalent to the mappings that would be performed later by <a href="#sec2p6p1">extlang promotion</a> (see §2.6.1).  For sake of completeness, here are Chinese legacy tags, which explicitly perform extlang promotion:</p>
+
+<blockquote id="zhm">
+<table>
+  <tr>
+    <th colspan="2">Chinese tags</th>
+  </tr>
+  <tr>
+    <th>Legacy tag</th>
+    <th>Modern form</th>
+  </tr>
+  <tr><td>zh-cmn</td><td>cmn</td></tr>
+  <tr><td>zh-cmn-Hans</td><td>cmn-Hans</td></tr>
+  <tr><td>zh-cmn-Hant</td><td>cmn-Hant</td></tr>
+  <tr><td>zh-gan</td><td>gan</td></tr>
+  <tr><td>zh-wuu</td><td>wuu</td></tr>
+  <tr><td>zh-yue</td><td>yue</td></tr>
+</table>
+</blockquote>
+
+<p>All other redundant records lack a <span class="tt">Preferred-​Value</span> field and can therefore be ignored.</p>
+
+<p>The redundant records in the subtag registry are a closed and frozen set.  Therefore, the set of redundant records and, by extension, the set of legacy tags is permanently fixed.</p>
+
+<h3 id="sec2p4">2.4 Tag remapping</h3>
+
+<p><i>Tag remapping</i> is the next normalization process performed after <a href="#sec2p1">universal tag normalization</a> (§2.1).  This process looks at the whole tag and decides whether the tag on the whole should be replaced by a different tag or left as it is.</p>
+
+<p>The dictionary of replacements is derived from the <a href="#extSubtag">[SUBTAG]</a> registry.  The set of keys in the replacement dictionary is equal to a subset of the union of all tag records of type <span class="tt">grandfathered</span> or <span class="tt">redundant</span>.  The subset includes only those records that have a <span class="tt">Preferred-​Value</span> field, and this field is the value that the tag key maps to.  This subset is equivalent to the union of the GG1 set of <a href="#sec2p2">grandfathered tags</a> (§2.2) and the set of <a href="#sec2p3">legacy tags</a> (§2.3).</p>
+
+<p>The included <span class="tt">tagremap</span> utility program will read the subtag registry data file and use it to generate the full replacement dictionary in <a href="#extJSON">[JSON]</a> format.</p>
+
+<p>The <span class="tt">langtag</span> module provides a function <span class="tt">rtnorm()</span> that takes a single argument to transform.  The function first passes the argument through to the <span class="tt">utnorm()</span> function defined in §2.1 <a href="#sec2p1">Universal tag normalization</a> and then if the return value from this function is not <span class="tt">None</span> the function performs any tag remappings, using a copy of the replacement dictionary embedded in the source file.  The invalid return value of <span class="tt">None</span> is passed through from <span class="tt">utnorm()</span>.</p>
+
+<p>The <span class="tt">rtnorm()</span> function works on all language tags, including the exceptional GG2 and GG3 <a href="#sec2p2">grandfathered tags</a> (§2.2).</p>
+
+<h3 id="sec2p5">2.5 Tag parsing</h3>
+
+<p>After <a href="#sec2p1">universal tag normalization</a> (§2.1) and <a href="#sec2p4">tag remapping</a> (§2.4), it is possible to parse the language tag into its component elements.</p>
+
+<p>Language tags are parsed into the following structure:</p>
 
 <ol>
-<li>The language tag has at least two subtags</li>
-<li>The first subtag is two or three letters</li>
-<li>The second subtag is three letters<sup><a href="#ft2p2n2">[†2]</a></sup></li>
+<li>Primary language subtag of two or three letters</li>
+<li>Secondary language subtag of three letters</li>
+<li>Irregular language subtag</li>
+<li>Script subtag of four letters</li>
+<li>Region subtag of two letters or three digits</li>
+<li>List of zero or more variant subtags</li>
+<li>Mapping of extension codes to list of subtags</li>
+<li>List of zero or more private subtags</li>
 </ol>
 
-<p>If all the above conditions are satisfied, then an extlang is present and it needs to be promoted to the main language<sup><a href="#ft2p2n3">[†3]</a></sup>.  To do this, simply drop the first subtag, so that second subtag becomes the first subtag.</p>
+<p>All subtags — including the primary language subtag — are optional.</p>
 
-<blockquote class="explain">
-<p id="ft2p2n2">[†2] — The RFC syntax allows for multiple extlang subtags to appear in a single language tag.  However, the RFC indicates that this syntax is “permanently reserved” and it does not ever appear to be used in practice.  Therefore, this theoretical case is ignored here.</p>
-<p id="ft2p2n3">[†3] — The extlang is sometimes used for handling macrolanguages.  In this case, the first subtag is the macrolanguage and the second subtag (the extlang) is the language within that macrolanguage.  All extlang tags have an equivalent language tag that has exactly the same code, so extlangs can always be promoted to the main language subtag simply by dropping the macrolanguage subtag.</p>
+<p>The first parsing step is to determine the primary language subtag.  After <span class="tt">rtnorm()</span> has been applied from §2.4 <a href="#sec2p4">Tag remapping</a>, the primary language subtag is always the first subtag in the language tag, except for the following special cases:</p>
+
+<blockquote class="iblock">
+<p>(1) If the whole tag matches a GG2 or GG3 <a href="#sec2p2">grandfathered tag</a> (§2.2), then the whole tag is stored in the irregular language subtag and all other parsed fields are empty.</p>
+
+<p>(2) If the first subtag is <span class="tt">x</span> then there is no primary language subtag and every subtag that occurs after the first subtag is stored as a private subtag.</p>
 </blockquote>
 
-<p>The first special case to consider after the initial normalization steps is whether the whole language tag matches one of the five GG2 and GG3 grandfathered tags.  If it does, then the language subtag is equal to the exceptional GG2 or GG3 tag, and the elaboration is empty.</p>
+<p>If neither of these special cases applies <b>and</b> there is more than one subtag in the language tag, then drop the first subtag (which has been recorded as the primary language) and proceed to the second parsing step.  Otherwise, parsing is finished.</p>
 
-<p>The second special case to consider is whether the first subtag is the single letter <span class="tt">x</span>.  If it is, then the language subtag is empty (the only case in which it can be empty) and the elaboration is equal to the whole language tag.</p>
+<p>The second parsing step is to look for a subtag that contains the single letter <span class="tt">x</span> in the remaining subtags.  If this subtag is found, then all subtags after the first instance of this subtag are copied into the list of private subtags and the <span class="tt">x</span> subtag and all subtags that follow it are then dropped from the language tag.  If this subtag is not found, then the list of private subtags is empty and proceed to the next parsing step.</p>
 
-<p>After the basic normalization and validation steps as well as the special cases that have just been described are handled, we are left with the general case.  The general case is that the language subtag is the first subtag and the elaboration is everything after the first subtag, except for the first hyphen in the string (if present).  In the general case, the language subtag must either be two or three letters<sup><a href="#ft2p2n4">[†4]</a></sup> and it must have a matching record of “language” type in the <a href="#extSubtag">[SUBTAG]</a> database.</p>
+<p>The third parsing step is to look for subtags that contain only a single letter or digit in the remaining subtags.  Each of these single-​character subtags marks the beginning of an extension.  Each extension begins at the single-​character subtag and proceeds up to but excluding the next single-​character subtag, or up to the end of the language tag if there are no further single-​character subtags.  The single-​character subtag is used as the key in the extension code mapping, while the list of zero or more subtags that follows it within the extension becomes the value of the extension code mapping.  If the same extension code is defined more than once in the same language tag, parsing fails and <span class="tt">None</span> is returned.</p>
 
-<blockquote class="explain" id="ft2p2n4">
-[†4] — The RFC also allows for language tags of four to eight letters, but reserves them for future use.  Such tags appear to be a carryover from an earlier standard and have no practical use, so they are ignored here.  
+<p>If any extensions were found during this step, all the extension subtags are dropped from the language tag before proceeding.</p>
+
+<p>The fourth parsing step is to parse any remaining subtags.  The remaining subtags are classified by their format.  Format code notation is used below.  These format codes use the following special characters:</p>
+
+<ul>
+<li><span class="tt">A</span> means an uppercase letter</li>
+<li><span class="tt">a</span> means a lowercase letter</li>
+<li><span class="tt">D</span> means a decimal digit</li>
+<li><span class="tt">*</span> means anything that doesnʼt match any of the other formats</li>
+</ul>
+
+<p>The following table shows how the remaining subtags can be classified into their subtag type by their format:</p>
+
+<blockquote id="stf">
+<table>
+  <tr>
+    <th>Format</th>
+    <th>Subtag type</th>
+  </tr>
+  <tr><td>aaa</td><td class="desc">Secondary language</td></tr>
+  <tr><td>Aaaa</td><td class="desc">Script</td></tr>
+  <tr><td>AA</td><td rowspan="2" class="desc">Region</td></tr>
+  <tr><td>DDD</td></tr>
+  <tr><td>*</td><td class="desc">Variant</td></tr>
+</table>
 </blockquote>
 
-<p>In the general case, it is also necessary to check whether the language record in the subtag database has a <span class="tt">Preferred-​Value</span> field.  If it does, the language tag must be normalized to its preferred value.  This additional normalization is <i>not</i> required for the two special cases listed earlier.</p>
+<p>Each subtag type may occur at most once, except for variant tags, which may occur in any number.  If a non-​variant subtag type occurs more than once in a language tag, parsing fails and <span class="tt">None</span> is returned.</p>
 
-<p>The result of the processes described in this subsection is that the language tag is parsed into a language subtag and an elaboration, where the elaboration is a sequence of zero or more additional subtags (the meaning of which is described in subsequent subsections).  The languge subtag will have one of the following formats:</p>
+<p>The <span class="tt">parse()</span> function in the <span class="tt">langtag</span> module is able to perform all the parsing steps listed above.  If successful, it returns a <span class="tt">Lang​Parse</span> object instance which has the following read-​only properties:</p>
+
+<blockquote id="ppr">
+<table>
+  <tr>
+    <th>Property</th>
+    <th colspan="2">Possible types</th>
+    <th>Contents</th>
+  </tr>
+  <tr><td class="cv">plang</td><td class="cv">str</td><td class="cv">None</td><td>Primary language</td></tr>
+  <tr><td class="cv">extlang</td><td class="cv">str</td><td class="cv">None</td><td>Secondary language</td></tr>
+  <tr><td class="cv">ilang</td><td class="cv">str</td><td class="cv">None</td><td>Irregular language</td></tr>
+  <tr><td class="cv">script</td><td class="cv">str</td><td class="cv">None</td><td>Script</td></tr>
+  <tr><td class="cv">region</td><td class="cv">str</td><td class="cv">None</td><td>Region</td></tr>
+  <tr><td class="cv">variant</td><td class="cv">list(str)</td><td class="cv">None</td><td>Variant(s)</td></tr>
+</table>
+</blockquote>
+
+<p>Fields that are not present in the language tag return <span class="tt">None</span> through their properties.  The <span class="tt">variant</span> property returns a fresh copy of the variant list each time it is called if there is at least one variant tag; else, it returns <span class="tt">None</span> each time.</p>
+
+<p>Although the object instances store the extension mappings and the private subtags, there is no way to get this information directly through property access.  A special constructor form allows new <span class="tt">Lang​Parse</span> instances to be derived from existing instances by copying their extension mappings and private subtags.</p>
+
+<p>Finally, the <span class="tt">assemble()</span> function is provided for <span class="tt">Lang​Parse</span> instances, which assembles all the components into a language tag with all the elements ordered properly.  The assembled language tag includes extension mappings and private subtags, if they are present within the instance.</p>
+
+<h3 id="sec2p6">2.6 Language remapping</h3>
+
+<p><i>Language remapping</i> adjusts the primary and secondary language subtags within a <a href="#sec2p5">parsed tag</a> (§2.5) to make them more normal.  Before performing language remapping, <a href="#sec2p1">universal tag normalization</a> (§2.1), <a href="#sec2p4">tag remapping</a> (§2.4), and <a href="#sec2p5">tag parsing</a> (§2.5) must be performed.</p>
+
+<p>The following subsections describe each of the steps in the process of language remapping.</p>
+
+<h4 id="sec2p6p1">2.6.1 Extlang promotion</h4>
+
+<p>The first step of language remapping is <i>extlang promotion.</i>  If there is a secondary language subtag defined (an extlang), then the primary language subtag is overwritten with the value of the secondary language subtag and the secondary language subtag is then dropped.  In this case, the primary language subtag was representing a macrolanguage while the secondary language was representing a language within this macrolanguage.  The macrolanguage data can be derived later (see §4 <a href="#sec4">Macrolanguage identification</a>), so it is not a problem to drop it here.</p>
+
+<h4 id="sec2p6p2">2.6.2 Archaic tags</h4>
+
+<p>The second step of language remapping is to handle <i>archaic tags.</i>  These are old two-​letter language codes that have fallen out of use.  Specifically, the archaic tags are all language subtag records in <a href="#extSubtag">[SUBTAG]</a> that have a two-​letter subtag and also have a <span class="tt">Preferred-​Value</span> field.  The following table shows all the archaic tags and their normalized values:</p>
+
+<blockquote id="arc">
+<table>
+  <tr>
+    <th>Archaic tag</th>
+    <th>Normalized</th>
+  </tr>
+  <tr><td>in</td><td>id</td></tr>
+  <tr><td>iw</td><td>he</td></tr>
+  <tr><td>ji</td><td>yi</td></tr>
+  <tr><td>jw</td><td>jv</td></tr>
+  <tr><td>mo</td><td>ro</td></tr>
+</table>
+</blockquote>
+
+<p>If the parsed tag has a primary language subtag that matches one of the archaic tags, it is replaced by its normalized equivalent.</p>
+
+<h4 id="sec2p6p3">2.6.3 Language subtag update</h4>
+
+<p>The third step of language remapping is to update language subtags.  The update mapping has keys that are three-​letter language codes and values that are two- or three-​letter language codes they should be replaced with.  (All updates to two-​letter language codes were handled in the previous step.)  The update mapping is derived from a combination of the <a href="#extSubtag">[SUBTAG]</a> registry and the retirements table of <a href="#extISO6393">[ISO-​639-3]</a>.
+
+<p>The retirements table of ISO-​639-3 has errors in some of its records, so before it can be used, certain fixes must be applied.  (The <span class="tt">iso3</span> module of Langtag performs these fixes automatically, so no manual adjustment of the data file is necessary when using the Subtag utilities.)  The following list indicates what the errors are and how to fix them:</p>
+
+<blockquote class="iblock">
+<p>(1) <b>The record for <span class="tt">chs</span> lacks a reason code.</b>  Since no language code remapping is specified by this incomplete record, the record is ignored.  There is no record for this subtag in the subtag registry, either.</p>
+
+<p>(2) <b>There is a circular remapping involving <span class="tt">lcq</span> and <span class="tt">ppr</span>.</b>  Specifically, the retirements table indicates both that <span class="tt">lcq</span> should be retired and replaced with <span class="tt">ppr</span> and that <span class="tt">ppr</span> should be retired and replaced by <span class="tt">lcq</span>.  The subtag registry only has the <span class="tt">ppr</span> updated to <span class="tt">lcq</span> mapping, and this is also the mapping that has a later date in the retirements table.  Therefore, the retirement record mapping <span class="tt">lcq</span> to <span class="tt">ppr</span> is assumed to be an error and it is dropped.</p>
+
+<p>(3) <b>The <span class="tt">ymt</span> and <span class="tt">guv</span> records map the language code to itself.</b>  That is, these two records specify that a code should be retired and replaced by itself, which does not make sense.  The subtag registry has <span class="tt">ymt</span> updated to <span class="tt">mtm</span> and <span class="tt">guv</span> updated to <span class="tt">duz</span>, and so those update mappings will be used instead of the incoherent mappings in the retirements table.</p>
+</blockquote>
+
+<p>If ISO-​639-3 is updated so that any of the errors listed above are no longer present in the data, then Langtag will no longer perform the relevant automatic fixes.</p>
+
+<p>There is also one inconsistency in the remappings documented in the subtag registry versus the remappings documented in the ISO-​639-3 retirements table, though this inconsistency is not an error.  In the subtag registry, the language code <span class="tt">adp</span> is updated to <span class="tt">dz</span> but in the ISO-​639-3 retirements table, <span class="tt">adp</span> is updated to <span class="tt">dzo</span>.  Both <span class="tt">dz</span> and <span class="tt">dzo</span> refer to the same language, however.  The reason that <span class="tt">dzo</span> is used in the ISO-​639-3 retirements table is that the retirements table can only map to updated language codes that have three letters, while the subtag registry does not have this restriction.  The <span class="tt">adp</span> mapping is, in fact, the only remapping where a three-​letter code is updated to a two-​letter code.  Langtag uses the simpler updated value of <span class="tt">dz</span> in its language remapping.</p>
+
+<p>Except for the archaic tags handled in the previous step and the specific errors and inconsistencies documented above, the language remappings in the subtag registry are a strict subset of the language remappings in the ISO-​639-3 retirements table.  Therefore, the third step of language remapping will use the language remappings in the ISO-​639-3 retirements table, with the corrections and adjustments noted above.</p>
+
+<p>Specifically, if the parsed tag has a primary language subtag that matches a record in the <a href="#extISO6393">[ISO-​639-3]</a> deprecated and retired codes table <b>and</b> this retired record has a <span class="tt">Change_​To</span> field that maps it to a preferred value, then replace the primary language subtag with this preferred value.  However, make sure that the corrections to the ISO-​639-3 retirements table documented earlier are performed first.  These corrections are done automatically by Langtag, except for the adjustment to the <span class="tt">adp</span> subtag (which is not strictly necessary, since the three-​letter subtag will be changed to the two-​letter equivalent in later steps anyway).</p>
+
+<p>The included <span class="tt">lang​remap</span> utility will read the data files and use them to generate the full language remapping dictionary in <a href="#extJSON">[JSON]</a> format, which includes both the archaic tags and the language code updates, with all necessary corrections and adjustments applied.  Using this generated mapping on the primary language subtag (if it is present) will perform both the second and third steps of language remapping simultaneously.</p>
+
+<h4 id="sec2p6p4">2.6.4 Subtag simplification</h4>
+
+<p>The fourth and final step of language remapping is <i>subtag simplification.</i>  All languages that can be used in the primary language subtag have a three-​letter code.  Some of these languages have a second three-​letter code that can be used as an alternative.  And some of these languages also have a two-​letter code.  Subtag simplification makes sure that when a two-​letter code is available for a language it is used instead of the three-​letter codes, and that when no two-​letter code is available but there are two options for the three-​letter code, the same three-​letter code is always chosen.  This makes it easier to compare language subtags, since the same subtag will always be used for the same language.</p>
+
+<p>Subtag simplification is a simple process of checking whether the primary language subtag is in the simplification dictionary, and replacing it with the simplified code if it is.  However, the derivation of this simplification dictionary is complex, based on <a href="#extISO6392">[ISO-​639-2]</a>, <a href="#extISO6393">[ISO-​639-3]</a>, and <a href="#extISO6395">[ISO-​639-5]</a>.</p>
+
+<p>The language codes in ISO-​639-2 are almost a strict subset of the union of language codes in the main code table of ISO-​639-3 and the data table of ISO-​639-5.  ISO-​639-3 picks up most of the language codes from ISO-​639-2 and adds more, while ISO-​639-5 picks up the language families codes from ISO-​639-2.  There are only two specific cases where language code data from the ISO-​639-2 has made it into neither ISO-​639-3 nor ISO-​639-5:</p>
+
+<blockquote class="iblock">
+<p>(1) The language code <span class="tt">him</span> for “Himachali languages; Western Pahari languages” is present only in ISO-​639-2</p>
+
+<p>(2) The language code <span class="tt">bih</span>, which is present in ISO-​639-5, has a two-​letter code <span class="tt">bh</span> in ISO-​639-2 that is <i>not</i> present in ISO-​639-5 (probably because the data table for ISO-​639-5 has no column for recording two-​letter aliases)</p>
+</blockquote>
+
+<p>Apart from exception (2) above, ISO-​639-5 does not have any alternate language codes or two-​letter language codes, so we do not need to consult it for building the simplification dictionary.</p>
+
+<p>Once the exceptional mapping of <span class="tt">bih</span> to <span class="tt">bh</span> has been added, all other simplification mappings can be derived from the main code table of ISO-​639-3.  Within that table, the <span class="tt">Part2T</span> column, if present, always has a language code equal to the main <span class="tt">Id</span> column, so we can ignore that, too.  The only simplification remappings we need to record are the following:</p>
+
+<blockquote class="iblock">
+<p>(A) If there is a two-​letter language code <b>and</b> an alternate three-​letter language code, then we need a simplification mapping from the main three-​letter language code to the two-​letter language code as well as a simplification mapping from the alternate three-​letter language code to the two​letter language code</p>
+
+<p>(B) If there is a two-​letter language code but no alternate three-​letter language code, then we need a simplification mapping from the main three-​letter language code to the two-​letter language code</p>
+
+<p>(C) If there is an alternate three-​letter language code but no two-​letter language code, then we need a simplification mapping from the alternate three-​letter language code to the main three-​letter language code</p>
+</blockquote>
+
+<p>The included <span class="tt">lang​simp</span> utility will read the data files and use them to generate the full simplification dictionary in <a href="#extJSON">[JSON]</a> format.  Using this generated mapping on the primary language subtag (if it is present) will perform the full subtag simplification process.</p>
+
+<h3 id="sec2p7">2.7 Elaboration remapping</h3>
+
+<p>The <i>elaboration</i> refers to all subtags in a language tag besides the language subtags, extension codes, and private subtags.  The elaboration therefore includes script subtags, region subtags, and variant subtags.  <i>Elaboration remapping</i> is the process of updating older elaboration subtags to more modern equivalents.  Fortunately, this process is much easier than remapping language subtags.</p>
+
+<p>To build the elaboration remapping dictionary, simply go through all records in the <a href="#extSubtag">[SUBTAG]</a> registry of type <span class="tt">script</span> <span class="tt">region</span> and <span class="tt">variant</span>.  Within this set of records, the elaboration remappings are contained within any subtag records that have a <span class="tt">Preferred-​Value</span> field.  These are all the remappings that need to be recorded in the elaboration remapping dictionary.</p>
+
+<p>Each type of elaboration subtag has its own unique format, so all types of elaboration subtags can be stored in the same dictionary without worrying about key collisions.  For more about the different kinds of subtag formats, see §2.5 <a href="#sec2p5">Tag parsing</a>.</p>
+
+<p>The included <span class="tt">elaremap</span> utility will read the subtag registry and use it to generate the full elaboration remapping dictionary in <a href="#extJSON">[JSON]</a> format.  Using this generated mapping on any script, region, and variant subtags that occur in the <a href="#sec2p5">parsed language tag</a> (§2.5) is sufficient to perform elaboration remapping.</p>
+
+<h3 id="sec2p8">2.8 Script suppression</h3>
+
+<p>The final step in language tag normalization after all preceding steps have been performed is <i>script suppression.</i>  Many commonly used languages have a specific script that they are nearly always written in, so it is unnecessary and potentially confusing to explicitly mark this “default” writing system for the language.  For example, English is almost always written using the Latin alphabet, so tagging the language as <span class="tt">en-​Latn</span> is unnecessary and potentially confusing.  On the other hand, if English were written in the Deseret alphabet, it <i>would</i> be appropriate to explicitly tag the script with <span class="tt">en-​Dsrt</span>, since this writing system isnʼt normally expected for English.</p>
+
+<p>The <a href="#extSubtag">[SUBTAG]</a> registry uses the optional <span class="tt">Suppress-​Script</span> field on records of type <span class="tt">language</span> to indicate that the script subtag recorded in this field is considered the “default” script for the language subtag.  Therefore, if a script subtag matching the <span class="tt">Suppress-​Script</span> field value is used for the language subtag in the record, the script subtag should be dropped during normalization.</p>
+
+<p>The included <span class="tt">drop​script</span> utility will read the subtag registry and use it to generate a script suppression dictionary in <a href="#extJSON">[JSON]</a> format.  The keys in this dictionary are language subtags and the values in this dictionary are script subtags.  If a language subtag does not appear in the dictionary, then the language subtag does not have a “default” writing system.</p>
+
+<h3 id="sec2p9">2.9 Normalization process</h3>
+
+<p>The full process of normalizing a language tag involves performing all the steps documented in previous subsections in the order they are given.  In summary, language tag normalization requires the following steps:</p>
 
 <ol>
-<li>Empty string; elaboration always begins with <span class="tt">x-</span> in this case</li>
-<li>GG2 or GG3 <a href="#sec2p1">grandfathered tag</a> (§2.1); elaboration always empty in this case</li>
-<li>Two-letter language code, all lowercase</li>
-<li>Three-letter language code, all lowercase</li>
+<li><a href="#sec2p1">Universal tag normalization</a> (§2.1)</li>
+<li><a href="#sec2p4">Tag remapping</a> (§2.4)</li>
+<li><a href="#sec2p5">Tag parsing</a> (§2.5)</li>
+<li><a href="#sec2p6p1">Extlang promotion</a> (§2.6.1)</li>
+<li><a href="#sec2p6p3">Language remapping dictionary</a> (§2.6.3)</li>
+<li><a href="#sec2p6p4">Simplification dictionary</a> (§2.6.4)</li>
+<li><a href="#sec2p7">Elaboration remapping</a> (§2.7)</li>
+<li><a href="#sec2p8">Script suppression</a> (§2.8)</li>
 </ol>
 
-<p>For information about how to interpret a language subtag, see §3 <a href="#sec3">Language identification</a>.</p>
+<p>The <span class="tt">norm()</span> function in the <span class="tt">langtag</span> module will perform the full normalization process.  It takes a single argument, which is the language tag to normalize.  If the given argument is not a string or the normalization process fails, <span class="tt">None</span> is returned.  Otherwise, the return value is the normalized language tag.</p>
 
-<h2 id="sec3">3. Language identification</h2>
+<p>The <span class="tt">norm()</span> function does <i>not</i> guarantee that its return value is a valid language tag.  Use the verification function described in the next section to do that.</p>
 
-<h2 id="sec9">9. Language tag definition</h2>
+<p>The normalization process provided here by Langtag is sufficient to implement the “Canonicalization of Language Tags” described in §4.5 of <a href="#extRFC5646">[RFC-​5646]</a>.</p>
 
-<p>A <i>language tag</i> is a standard US-​ASCII textual code that identifies the “language” used in certain media.  For example, the language tag <span class="tt">en-US</span> identifies the English language as it is used in the United States.  Since “language” in this sense does not have a strict definition, the structure of a language tag can be surprisingly complex.</p>
+<h2 id="sec3">3. Language tag validation</h2>
 
-<p>Jacques-Types limits itself to three functions for working with language tags:</p>
+<p><i>Language tag validation</i> is the process of determining whether a given language tag is both valid and normalized.  Before validating a language tag, you should normalize it according to §2 <a href="#sec2">Language tag normalization</a> because the validation function will only validate fully normalized language tags.</p>
+
+<p>The first step in validation is to validate the basic format of the string.  The basic format of the language tag string is described in §2 <a href="#sec2">Language tag normalization</a>.  The following additional limitations are added to the list given in that section:</p>
 
 <ol>
-<li>Normalizing language tags</li>
-<li>Checking whether a language tag has the proper format</li>
-<li>If possible, mapping a normalized language tag to a non-​unique English-​language description of the language, but not necessarily including all information present in the language tag</li>
+<li>Language tags are at most 63 characters</li>
+<li><a href="#sec2p1">Letter casing conventions</a> (§2.1) must be followed</li>
+<li>Only the hyphen may be used as a separator</li>
 </ol>
 
-<p>The first two functions should work in all applications that use standard language tags.  The third function, however, is only sufficient for applications that want to display a user-friendly gloss of a language tag.  Sophisticated multilingual applications will likely need to supply their own methods for displaying language tags to the user in an unambiguous manner.  For example, Jacques-​Types will describe both language tags <span class="tt">es-419</span> and <span class="tt">es-ES</span> as <i>Spanish</i> but a more sophisticated multilingual application may want to use the region information in the language tags to identify <span class="tt">es-419</span> as <i>Spanish (Latin America)</i> and <span class="tt">es-ES</span> as <i>Castilian (Spain)</i>.</p>
+<p>The second step in validation is to see if the whole language tag is equal to any of the exceptional GG2 or GG3 <a href="#sec2p2">grandfathered tags</a> (§2.2).  If it is, then the language tag is valid and all subsequent steps are skipped.</p>
 
-<p>The normalization and format-​checking functions are based on the standard language tag format defined in <a href="#extRFC5646">[RFC-​5646]</a>.  This RFC specifies the format of language tags, but it does not actually define how language tag elements map to actual languages.</p>
+<p>The third validation step is to see if the whole language tag is a GG1 <a href="#sec2p2">grandfathered tag</a> (§2.2) or a <a href="#sec2p3">legacy tag</a> (§2.3).  If it is, then validation fails because the language tag is not normalized.  Both the GG1 and legacy tag checks can be done simultaneously by seeing if the whole tag is in the <a href="#sec2p4">tag remapping dictionary</a> (§2.4).</p>
 
-<p>The most basic standard defining the mapping of language tag elements to languages is <a href="#extISO6392">[ISO-​639-​2]</a>.  This standard defines a mapping of two-​letter and three-​letter codes to language names.  This standard was extended by <a href="#extISO6393">[ISO-​639-​3]</a>.  ISO-​639-​3 is a superset of ISO-​639-​2, except that certain codes in ISO-​639-​2 that refer to language families and groups of languages instead of individual languages are not included.  Jacques-​Types uses the codes in ISO-​639-​3, and does not concern itself with the additional language group codes in ISO-​639-​2 since those are out of scope of what Jacques-​Types does with language codes.</p>
+<p>The fourth validation step is to see if the first subtag is <span class="tt">x</span>.  If it is, then simply check that there are at least two subtags and that no subtag is more than eight characters long.  If these two checks pass, then the language tag is valid and skip all subsequent steps.  Otherwise, if either of these checks fail, then validation fails.  If the first subtag is not <span class="tt">x</span> then skip this fourth validation step.</p>
 
-<p>The format in RFC-5646 also includes “grandfathered” language tags.  This is a closed set of exceptional language tags that were registered in a previous version of the language-​tagging system.  RFC-5646 defines the set of grandfathered language tags but does not define their meaning.  The meaning of these grandfathered tags is defined in the <a href="#extSubtag">[SUBTAG]</a> dataset.  All the grandfathered tags are defined below, with the meanings based on the information from <a href="extSubtag">[SUBTAG]</a>.  Since the grandfathered set of language tags is a closed set, there shouldnʼt be any future changes to this set.</p>
+<p>The fifth validation step is to check the primary language subtag, which is always the first subtag (now that all special cases have been handled).  It must be either two or three characters, and each character must be a (lowercase) letter.  If there is a second subtag, the second subtag must not be three letters, because secondary language (extlang) subtags should not be present in normalized form.  Furthermore, the primary language code may not be a key in the <a href="#sec2p6p3">language remapping dictionary</a> (§2.6.3) nor in the <a href="#sec2p6p4">simplification dictionary</a> (§2.6.4).  Finally, if the primary language code is in the <a href="#sec2p8">script suppression dictionary</a> (§2.8), then scan all subtags after the first up to but excluding the first subtag that has only one character (or all the remaining subtags if there is no such subtag).  If any of these subtags are equal to the script subtag in the suppression dictionary entry, then validation fails.</p>
 
-<p>The grandfathered language tags fall into three groups.  The first group of grandfathered language tags — called GG1 here — are simply archaic language tags that map to a specific modern language tag that is not grandfathered.  During the Jacques-​Types normalization process, all grandfathered language tags in this first group will be replaced with their modern equivalents, and grandfathered language tags in this first group will not validate because they are not normalized.  The following table gives all the grandfathered tags in this group as well as the normalized tags they map to:</p>
+<p>After the fifth validation step is completed, drop the first subtag from the list before proceeding.</p>
 
-<p>The second group of grandfathered language tags — called GG2 here — are archaic language tags that have multiple possibilities for which modern tag they map to.  Since there is no easy way to determine which modern tag is appropriate, Jacques-​Types does <i>not</i> map GG2 tags to modern forms.  The table below gives all the GG2 tags, the set of modern tags they can map to, and a textual description name for the archaic tag, since the archaic tag may not be found in modern data tables:</p>
+<p>The sixth validation step is to check private subtags.  From the remaining subtags, scan for a subtag that contains just the letter <span class="tt">x</span>.  If such a subtag is found, then it must be followed by at least one subtag and all subtags that follow it may have at most eight characters.  After validation, drop the <span class="tt">x</span> subtag and all subtags that follow it from the list before proceeding.  If there is no <span class="tt">x</span> subtag, skip this validation step.</p>
 
-<p>The third and final group of grandfathered language tags — called GG3 here — are archaic language tags that have no modern tag equivalent.  Jacques-​Types does <i>not</i> map GG3 tags to modern forms, since there are no modern forms to map to.  The table below gives all the GG3 tags and a textual description for the archaic tag, since the archaic tag may not be found in modern data tables:</p>
+<p>The seventh validation step is to check extension codes.  From the remaining subtags, check that each subtag that has only one character is followed by a subtag that has at least two characters.  Also check that the subtags with only one character are in ascending order, with decimal digits ordered before letters, and that there are no duplicate extension codes.  Finally, check that from the first subtag with only one character to the end of the string, all subtags are at most eight characters.  After validation, drop the first subtag with one character and all subtags that follow it before proceeding.  If there were no subtags with only a single character, skip this validation step.</p>
 
-<p>Note that the vast majority of grandfathered language tags are in the GG1 group, which is normalized to modern tags.  The only grandfathered tags that can be present in normalized language tags are the five tags found in the GG2 and GG3 groups.</p>
+<p>The eighth validation step is to check that none of the remaining subtags are keys in the <a href="#sec2p7">elaboration dictionary</a> (§2.7).</p>
 
-<p>To normalize a language tag, use the following function:</p>
+<p>The ninth and final validation step is to check that any remaining subtags match the following pattern:</p>
 
-<blockquote class="cblock">
-JCQTypes::<b>normLang</b>(<br/>
-  $str : string | mixed<br/>
-) : string
+<blockquote class="iblock">
+<p>(1) Optionally, a subtag of four letters</p>
+
+<p>(2) Optionally, either a subtag of two letters or three digits (but not both)</p>
+
+<p>(3) Optionally, a sequence of subtags, each of which is either four characters where the first character is a digit, or five to eight characters</p>
 </blockquote>
 
-<p><b>Important:</b> the normalization function given here does <i>not</i> implement the “Canonicalization of Language Tags” described in §4.5 of <a href="#extRFC5646">[RFC-​5646]</a>.  Clients that have more sophisticated needs and require this additional level of normalization must provide for this functionality themselves.</p>
+<p>If all the above validation steps pass, then the language subtag is both valid and normalized.  The <span class="tt">valid()</span> function of the <span class="tt">langtag</span> module takes a single parameter and returns <span class="tt">True</span> if the parameter is a valid, normalized language tag and <span class="tt">False</span> otherwise.</p>
 
-<p>If something other than a string is passed, the effect is the same as passing an empty string.  The return string is <i>not</i> guaranteed to be a valid language tag.</p>
+<h2 id="sec4">4. Macrolanguage identification</h2>
 
-<p>The first step in normalization is to trim leading and trailing whitespace, and then to convert all underscores to hyphens.</p>
+<p>A <i>macrolanguage</i> is a set of languages that is treated as a single language.  Arabic and Chinese are two famous examples of macrolanguages.  The process of <i>macrolanguage identification</i> takes a language code and, if the language code is a component language of a macrolanguage, returns the language code of the macrolanguage.</p>
 
-<p>The second step in normalization is to convert all uppercase letters to lowercase.</p>
+<p>Macrolanguage identification is especially useful in situations where the name of a language is being presented in a user-​friendly fashion.  For the language code <span class="tt">nb</span> for example, the language name is <i>Norwegian Bokmål,</i> but it may be better to simply present the user with the name of the macrolanguage <span class="tt">no</span>, which is just <i>Norwegian.</i></p>
 
-<p>The third step in normalization is to look for the first <i>singleton</i> in the language tag.  A <i>singleton</i> is a lowercase letter or a decimal digit that is neither preceded nor followed by another ASCII lowercase letter or decimal digit.  Singletons may occur at the start of the string and at the end of the string, and the entire string may be a singleton if there is only one character.  It is also possible that there is no singleton in the whole string.</p>
+<p>There is a macrolanguage dictionary that maps normalized language codes to normalized language codes for the corresponding macrolanguage.  Only languages that are component languages of a macrolanguage have keys in this dictionary.  The dictionary is based on the macrolanguage table of <a href="#extISO6393">[ISO-​639-3]</a>, except all the language codes in that table are normalized according to §2 <a href="#sec2">Language tag normalization</a> before the mappings are added into the table.</p>
 
-<p>The fourth step is to define the <i>prefix</i> as everything up to <i>but excluding</i> the first singleton if there is at least one singleton in the string, or otherwise to define the prefix as the entire string.</p>
+<p>The included <span class="tt">macro​lang</span> utility is able to generate the macrolanguage dictionary in <a href="#extJSON">[JSON]</a> format.  The function <span class="tt">macro​lang()</span> in the <span class="tt">langtag</span> module takes a valid, normalized language tag and returns either the normalized macrolanguage code or <span class="tt">None</span> if the given language tag is not for a component language of a macrolanguage.</p>
 
-<p>The fifth step is to locate all <i>doubles</i> in the prefix defined in the previous step.  A double is a sequence of two lowercase ASCII letters that is preceded by a hyphen and <i>not</i> followed by an ASCII letter.  Each double that is found in the prefix is converted to uppercase.</p>
+<h2 id="sec5">5. Language names</h2>
 
-<p>The sixth step is to locate all <i>quads</i> in the prefix defined in the fourth step.  A quad is a sequence of four lowercase ASCII letters that is preceded by a hyphen and <i>not</i> followed by an ASCII letter.  Each quad that is found in the prefix has <i>its first letter only</i> converted to uppercase.</p>
+<p>Langtag also provides the ability to map valid, normalized language codes to names that can be displayed to the user.  The name data is based on the <a href="#extISO6393">[ISO-​639-3]</a> language name table, the language family names in <a href="#extISO6395">[ISO-​639-5]</a>, a few names in <a href="#extISO6392">[ISO-​639-2]</a> that are not available in the later standards, and the <a href="#extSubtag">[SUBTAG]</a> registry for the names of the GG1 and GG2 <a href="#sec2p2">grandfathered tags</a> (§2.2).</p>
 
-<p>The seventh and final step is to compare the result of the previous steps to the GG1 table given earlier in this section to see if the result is one of the grandfathered tags in the first group.  If it is, then replace the whole string with the special normalized form given in the earlier table.  Otherwise, leave the result as-is.  The grandfathered tags in the second and third groups (GG2 and GG3) are <i>not</i> modified in this step.</p>
+<p>The language code to name mapping dictionary is presented as a <a href="#extJSON">[JSON]</a> data file.  The JSON file stores a single object that maps language code strings to an array of two strings.  The first string in the array is the regular language name while the second string in the array is the “inverted name.”  For example, the language code <span class="tt">gsw</span> has the regular name <i>Swiss German</i> and the inverted name <i>German, Swiss.</i>  For many languages, the regular name and inverted name are the same, in which case the array only has one element, which should be used for both contexts.</p>
 
-<p>To validate a normalized language tag, use the following function:</p>
+<p>The language names may include Unicode characters, though for the most part language names stay with their English names.  Langtag will check the following for each name:</p>
 
-<blockquote class="cblock">
-JCQTypes::<b>checkLang</b>(<br/>
-  $str : string | mixed<br/>
-) : boolean
+<blockquote class="iblock">
+<p>(1) The name is trimmed of leading and trailing whitespace</p>
+
+<p>(2) The name will be normalized to Unicode NFC form</p>
+
+<p>(3) The name may not be empty after trimming and normalization</p>
+
+<p>(4) The name may not have any ASCII control codes in range [0x00, 0x1F] or the code 0x7F</p>
+
+<p>(5) The name may not have any supplementary Unicode codepoints of 0x10000 or above, nor may it include any Unicode surrogate codepoints</p>
+
+<p>(6) Double quote and backslash characters will be properly escaped for storage in JSON string literals</p>
+
+<p>(7) Any Unicode character of 0x80 or above will be represented with a JSON Unicode escape so that the whole resulting JSON file will be US-​ASCII</p>
 </blockquote>
 
-<p>You should normalize the language tag first with <span class="tt">norm​Lang()</span> or the non-​normalized text may fail validation.</p>
+<p>The included <span class="tt">name​lang</span> utility will generate this JSON object from the data files.  All language codes will be normalized according to §2 <a href="#sec2">Language tag normalization</a> before being stored in the data file.</p>
 
-<p>Passing a non-string parameter always causes the function to return <span class="tt">false</span>.  The function returns a boolean value that is <span class="tt">true</span> if the language tag is normalized and valid in format and <span class="tt">false</span> otherwise.</p>
+<p>Since the full mapping is rather large, there is no built-​in support for naming languages in the <span class="tt">langtag</span> module.  Clients should instead use the generated JSON file to fill in a database table which can then be used for language name lookup.</p>
 
-<p>The first validation step is to check whether the string is a case-​sensitive match for any of the grandfathered tags in GG2 or GG3 (shown in tables earlier in this section).  If the given string is such an exact match for a GG2 or GG3 grandfather tag, then <span class="tt">true</span> is returned and the rest of the validation is skipped.  Note that GG1 grandfather tags do <i>not</i> get this special handling, since they should have been normalized to their modern equivalent.</p>
-
-<p>The second validation step is to check that the string has at least one character and at most 255 characters.  RFC 5646 allows for unlimited-​length language tags, but it allows in §4.4.1 “Working with Limited Buffer Sizes” that applications may impose an upper limit.  The limit of 255 characters enforced by Jacques-​Types is far beyond the limit of 35 characters suggested in the RFC.</p>
-
-<p>The third validation step is to check that each character is either an ASCII alphanumeric character or a hyphen.  No other characters are allowed in normalized language tags.</p>
-
-<p>The fourth validation step is to check that neither the first nor the last character is a hyphen, and that no hyphen is immediately preceded by another hyphen.</p>
-
-<p>The fifth validation step is to check that the language tag begins with one of the following:</p>
-
-<ol>
-<li>The two-character marker <span class="tt">x-</span></li>
-<li>Two lowercase letters followed by end of string</li>
-<li>Two lowercase letters followed by a hyphen</li>
-<li>Three lowercase letters followed by end of string</li>
-<li>Three lowercase letters followed by hyphen</li>
-<li>Four to eight lowercase letters followed by end of string</li>
-<li>Four to eight lowercase letters followed by hyphen</li>
-</ol>
-
-<p>If the string begins with anything else, validation fails.  (However, note that the grandfathered tags in GG2 and GG3 pass validation as an exception due to step one.)</li>
-
-<p>The sixth validation step is to drop everything up to <i>but excluding</i> the first hyphen, or to drop all the characters in the string if there are no hyphens.  However, if the string began with the marker <span class="tt">x-</span> then add a hyphen prefix as an exception to this rule.  When data is dropped, remember how many letters were dropped from the start of the string.</p>
-
-<p>... @@TODO: move all functions to separate language module so database can be used, and during normalization and validation make sure three-letter language codes replaced by two-letter language codes if possible; will require new language database format that first has replacement table and then has mapping table from normalized language code to name</p>
+<p>All keys in the language name JSON object are either two or three lowercase letters, except for the five GG2 and GG3 <a href="#sec2p2">grandfathered tags</a> (§2.2).</p>
 
 <hr/>
 
@@ -533,9 +894,12 @@ Library of Congress Network Development &amp; MARC Standards Office<br/>
 SIL International<br/>
 <a href="https://iso639-3.sil.org/">https://iso639-3.sil.org/</a></p>
 
-<p id="extISO6392">[ISO-639-5] — “ISO-639-5 Registration Authority”<br/>
+<p id="extISO6395">[ISO-639-5] — “ISO-639-5 Registration Authority”<br/>
 Library of Congress Network Development &amp; MARC Standards Office<br/>
 <a href="https://www.loc.gov/standards/iso639-5/">https://www.loc.gov/standards/iso639-5/</a></p>
+
+<p id="extJSON">[JSON] — “Introducing JSON”<br/>
+<a href="https://www.json.org/">https://www.json.org/</a></p>
 
 <p id="extRFC5646">[RFC-5646] — “Tags for Identifying Languages”<br/>
 A component RFC of BCP 47<br/>
